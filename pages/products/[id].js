@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_PRODUCT } from "../../apollo/queries";
+import withApollo from "../../hoc/withApollo";
+import { getDataFromTree } from "@apollo/react-ssr";
+
 import Layout from "../../components/Layout";
 import Description from "../../components/Description";
 import Shipping from "../../components/Shipping";
 import Detail from "../../components/Detail";
-
+import Spinner from "../../components/Spinner";
 import styles from "../../styles/productdetail.module.css";
 
 function ProductDetail({ query }) {
-  //const router = useRouter();
-  //const { id } = router.query;
-  const { id } = query;
-
   const [state, setState] = useState("women");
 
   const mySpecialFunctionMujeres = () => {
@@ -40,9 +40,13 @@ function ProductDetail({ query }) {
     mySpecialFunctionHombres();
   };
 
+  const { loading, error, data } = useQuery(GET_PRODUCT, {
+    variables: { id: query.id },
+  });
+  const product = (data && data.product) || {};
+
   return (
     <Layout>
-      <h1>La identidad es: {id}</h1>
       <div>
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
@@ -65,12 +69,9 @@ function ProductDetail({ query }) {
               <div className="columns">
                 <div className="column">
                   <div className="card is-shady">
-                    <a className="is-white">
+                    <a href="/" className="is-white">
                       <figure className="image is-fullwidth">
-                        <img
-                          src="http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
-                          alt="Product image"
-                        />
+                        <img src={product.photo} alt="Product image" />
                       </figure>
                     </a>
                   </div>
@@ -79,12 +80,9 @@ function ProductDetail({ query }) {
               <div className="columns">
                 <div className="column">
                   <div className="card is-shady">
-                    <a className="is-white">
+                    <a href="/" className="is-white">
                       <figure className="image is-fullwidth">
-                        <img
-                          src="http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
-                          alt="Product image"
-                        />
+                        <img src={product.photo} alt="Product image" />
                       </figure>
                     </a>
                   </div>
@@ -93,12 +91,9 @@ function ProductDetail({ query }) {
               <div className="columns">
                 <div className="column">
                   <div className="card is-shady">
-                    <a className="is-white">
+                    <a href="/" className="is-white">
                       <figure className="image is-fullwidth">
-                        <img
-                          src="http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
-                          alt="Product image"
-                        />
+                        <img src={product.photo} alt="Product image" />
                       </figure>
                     </a>
                   </div>
@@ -107,12 +102,9 @@ function ProductDetail({ query }) {
               <div className="columns">
                 <div className="column">
                   <div className="card is-shady">
-                    <a className="is-white">
+                    <a href="/" className="is-white">
                       <figure className="image is-fullwidth ">
-                        <img
-                          src="http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
-                          alt="Product image"
-                        />
+                        <img src={product.photo} alt="Product image" />
                       </figure>
                     </a>
                   </div>
@@ -121,17 +113,109 @@ function ProductDetail({ query }) {
             </div>
             <div className="column is-four-fifths">
               <figure className="image is-fullwidth is-5by4">
-                <img
-                  src="http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
-                  alt="Product image"
-                />
+                <img src={product.photo} alt="Product image" />
               </figure>
             </div>
           </div>
         </div>
 
         <div className="column">
-          <Detail />
+          <div>
+            <h1 className="mt3">{product.name}</h1>
+            <div className="columns mt-5">
+              <div className="column">
+                <div className="mr-3">
+                  <label className="has-text-weight-medium mr-3">Precio:</label>
+                  <span>${product.price}</span>
+                </div>
+                <div className="columns is-gapless mt-4">
+                  <div className="column is-1 has-text-weight-medium">
+                    <label>Color:</label>
+                  </div>
+
+                  <div className="column is-1">
+                    <a href="/">
+                      <div className={styles.circuloAmarillo}></div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div className={styles.circuloAzul}></div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div className={styles.circuloNegro}></div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div className={styles.circuloRojo}></div>
+                    </a>
+                  </div>
+                  <div className="column"></div>
+                </div>
+                {/* Size */}
+                <div className="columns is-gapless  mt-5">
+                  <div className="column is-1 has-text-weight-medium mr-3">
+                    <label>Size:</label>
+                  </div>
+
+                  <div className="column is-1">
+                    <a href="/">
+                      <div>XS</div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div>S</div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div>M</div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div>L</div>
+                    </a>
+                  </div>
+                  <div className="column is-1">
+                    <a href="/">
+                      <div>XL</div>
+                    </a>
+                  </div>
+                  <div className="column"></div>
+                </div>
+
+                <div className="columns mt-5">
+                  <div className="column">
+                    <div className="mr-3 has-text-weight-medium">
+                      Cantidad: <Spinner />{" "}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="columns mt-5">
+                  <div className="column">
+                    <div className="mr-3 has-text-weight-medium">
+                      Status: <p>{product.status}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="columns mt-5">
+              <div className="column">
+                <div className="is-flex is-justify-content-start">
+                  <button className="button is-danger is-hovered is-size-5">
+                    Añadir al Carrito
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <section className="section">
@@ -144,7 +228,7 @@ function ProductDetail({ query }) {
             >
               <div id="navbarBasicExample" className="navbar-menu">
                 <div className="navbar-start">
-                  <a className="navbar-item is-tab ">
+                  <a href="/" className="navbar-item is-tab ">
                     <button
                       className="button has-text-weight-medium"
                       onClick={onClickHandlerMujeres}
@@ -152,7 +236,7 @@ function ProductDetail({ query }) {
                       Description
                     </button>
                   </a>
-                  <a className="navbar-item is-tab ">
+                  <a href="/" className="navbar-item is-tab ">
                     <button
                       className="button has-text-weight-medium"
                       onClick={onClickHandlerHombres}
@@ -175,8 +259,8 @@ function ProductDetail({ query }) {
   );
 }
 
-ProductDetail.getInitialProps = ({ query }) => {
+ProductDetail.getInitialProps = async ({ query }) => {
   return { query };
 };
 
-export default ProductDetail;
+export default withApollo(ProductDetail, { getDataFromTree });

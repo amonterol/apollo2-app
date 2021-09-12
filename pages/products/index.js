@@ -1,136 +1,35 @@
-import Layout from "../../components/Layout";
 import {
-  faArrowCircleDown,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  useGetProduct,
+  useUpdateProduct,
+  useDeletePrduct,
+  useCreateProduct,
+} from "../../apollo/actions";
+
+import withApollo from "../../hoc/withApollo";
+import { getDataFromTree } from "@apollo/react-ssr";
+
+import Layout from "../../components/Layout";
 import ProductCard from "../../components/ProductCard";
 import ColoredLine from "../../components/ColoredLine";
+import Link from "next/link";
+import styles from "../../styles/productdetail.module.css";
 
-const apiCall = () => {
-  return new Promise((res, req) => {
-    setTimeout(() => {
-      res({ testingData: "Just some testing data" });
-    }, 1000);
-  });
-};
+function Products() {
+  //CRUD
+  const { data } = useGetProduct();
+  const [updateProduct] = useUpdateProduct();
+  const [deleteProduct] = useDeletePrduct();
+  const [createProduct] = useCreateProduct();
 
-function Products(props) {
-  const products = [
-    {
-      id: "1",
-      name: "Yeti Hondo",
-      description: "soo nice",
-      status: "AVAILABLE",
-      price: 3423,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg",
-    },
-    {
-      id: "2",
-      name: "Airmax 270",
-      description: "Great shoes!",
-      status: "AVAILABLE",
-      price: 5234,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579815920/sick-fits-keystone/5e2a13f0689b2835ae71d1a5.jpg",
-    },
-    {
-      id: "3",
-      name: "KITH Hoodie",
-      description: "Love this hoodie",
-      status: "AVAILABLE",
-      price: 23562,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579815935/sick-fits-keystone/5e2a13ff689b2835ae71d1a7.jpg",
-    },
-    {
-      id: "4",
-      name: "Fanorak",
-      description: "Super hip. Comes in a number of colours",
-      status: "AVAILABLE",
-      price: 252342,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579815957/sick-fits-keystone/5e2a1413689b2835ae71d1a9.png",
-    },
-    {
-      id: "5",
-      name: "Nike Vapormax",
-      description: "Kind of squeaky on some floors",
-      status: "AVAILABLE",
-      price: 83456,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579815980/sick-fits-keystone/5e2a142c689b2835ae71d1ab.jpg",
-    },
-    {
-      id: "6",
-      name: "Yeti Cooler",
-      description: "Who spends this much on a cooler?!",
-      status: "AVAILABLE",
-      price: 75654,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579815999/sick-fits-keystone/5e2a143f689b2835ae71d1ad.jpg",
-    },
-    {
-      id: "7",
-      name: "Naked and Famous Denim",
-      description: "Japanese Denim, made in Canada",
-      status: "AVAILABLE",
-      price: 10924,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816030/sick-fits-keystone/5e2a145d689b2835ae71d1af.jpg",
-    },
-    {
-      id: "8",
-      name: "Rimowa Luggage",
-      description: "S T E A L T H",
-      status: "AVAILABLE",
-      price: 47734,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816060/sick-fits-keystone/5e2a147b689b2835ae71d1b1.png",
-    },
-    {
-      id: "9",
-      name: "Black Hole ",
-      description: "Outdoorsy ",
-      status: "AVAILABLE",
-      price: 4534,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816093/sick-fits-keystone/5e2a149b689b2835ae71d1b3.jpg",
-    },
-    {
-      id: "10",
-      name: "Nudie Belt",
-      description: "Sick design",
-      status: "AVAILABLE",
-      price: 5234,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816114/sick-fits-keystone/5e2a14b1689b2835ae71d1b5.jpg",
-    },
-    {
-      id: "11",
-      name: "Goose",
-      description: "Keep warm.",
-      status: "AVAILABLE",
-      price: 74544,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816128/sick-fits-keystone/5e2a14bf689b2835ae71d1b7.jpg",
-    },
-    {
-      id: "12",
-      name: "Ultraboost",
-      description: "blacked out",
-      status: "AVAILABLE",
-      price: 6344,
-      photo:
-        "http://res.cloudinary.com/wesbos/image/upload/v1579816141/sick-fits-keystone/5e2a14cc689b2835ae71d1b9.jpg",
-    },
-  ];
+  const products = (data && data.products) || [];
 
   return (
     <Layout>
       <ColoredLine />
-      {props.testingData}
+      <button className="button is-info" onClick={createProduct}>
+        Create Product
+      </button>
+
       <div>
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
@@ -203,8 +102,30 @@ function Products(props) {
             <section className="pb-5">
               <div className="row">
                 {products.map((product) => (
-                  <div key={product.id} className="column is-3">
-                    <ProductCard product={product} />
+                  <div key={product._id} className="column is-3">
+                    <Link href="/products/[id]" as={`/products/${product._id}`}>
+                      <a className={styles.cardLink}>
+                        <ProductCard product={product} />
+                      </a>
+                    </Link>
+                    <div>
+                      <button
+                        className="button is-danger"
+                        onClick={() =>
+                          deleteProduct({ variables: { id: product._id } })
+                        }
+                      >
+                        Delete Product
+                      </button>
+                      <button
+                        className="button is-warning"
+                        onClick={() =>
+                          updateProduct({ variables: { id: product._id } })
+                        }
+                      >
+                        Update Product
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -216,13 +137,4 @@ function Products(props) {
   );
 }
 
-Products.getInitialProps = async () => {
-  console.log("GET INITIAL PROPS PRODUCTS");
-  const data = await apiCall();
-
-  return {
-    ...data,
-  };
-};
-
-export default Products;
+export default withApollo(Products, { getDataFromTree });

@@ -1,15 +1,15 @@
 import Spinner from "./Spinner";
 import styles from "../styles/productdetail.module.css";
 
-function Detail() {
+function Detail({ product }) {
   return (
     <div>
-      <h1 className="mt3">Vestido Midi Evasé de Lino</h1>
+      <h1 className="mt3">{product.name}</h1>
       <div className="columns mt-5">
         <div className="column">
           <div className="mr-3">
             <label className="has-text-weight-medium mr-3">Precio:</label>
-            <span>$76.00</span>
+            <span>${product.price}</span>
           </div>
           <div className="columns is-gapless mt-4">
             <div className="column is-1 has-text-weight-medium">
@@ -76,6 +76,14 @@ function Detail() {
             <div className="column">
               <div className="mr-3 has-text-weight-medium">
                 Cantidad: <Spinner />{" "}
+              </div>
+            </div>
+          </div>
+
+          <div className="columns mt-5">
+            <div className="column">
+              <div className="mr-3 has-text-weight-medium">
+                Status: <p>{product.status}</p>
               </div>
             </div>
           </div>
