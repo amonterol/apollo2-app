@@ -25,7 +25,7 @@ export const GET_PRODUCTS = gql`
     }
   }
 `;
-
+/*
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct {
     createProduct(
@@ -42,6 +42,43 @@ export const CREATE_PRODUCT = gql`
       description
       status
       price
+      photo
+    }
+  }
+`;
+*/
+
+export const CREATE_PRODUCT = gql`
+  mutation CreateProduct(
+    $name: String!
+    $description: String!
+    $status: String!
+    $price: String!
+    $cantidad: String!
+    $category: String!
+    $subcategory: String!
+    $photo: String!
+  ) {
+    createProduct(
+      input: {
+        name: $name
+        description: $description
+        status: $status
+        price: $price
+        cantidad: $cantidad
+        category: $category
+        subcategory: $subcategory
+        photo: $photo
+      }
+    ) {
+      _id
+      name
+      description
+      status
+      price
+      cantidad
+      category
+      subcategory
       photo
     }
   }
@@ -74,3 +111,53 @@ export const DELETE_PRODUCT = gql`
     deleteProduct(id: $id)
   }
 `;
+
+// AUTH QUERIES START ----------------------------
+
+export const SIGN_UP = gql`
+  mutation SignUp(
+    $name: String!
+    $username: String!
+    $email: String!
+    $password: String!
+    $passwordConfirmation: String!
+  ) {
+    signUp(
+      input: {
+        name: $name
+        username: $username
+        email: $email
+        password: $password
+        passwordConfirmation: $passwordConfirmation
+      }
+    )
+  }
+`;
+
+export const SIGN_IN = gql`
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(input: { email: $email, password: $password }) {
+      _id
+      username
+      role
+    }
+  }
+`;
+
+export const SIGN_OUT = gql`
+  mutation SignOut {
+    signOut
+  }
+`;
+
+export const GET_USER = gql`
+  query User {
+    user {
+      _id
+      username
+      role
+    }
+  }
+`;
+
+// AUTH QUERIES END ----------------------------

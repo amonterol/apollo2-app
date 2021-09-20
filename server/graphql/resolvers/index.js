@@ -1,3 +1,51 @@
+const Product = require("../../database/models/product");
+
+exports.productQueries = {
+  product: async (root, { id }, ctx) => {
+    return await ctx.models.Product.getById(id);
+  },
+  products: async (root, args, ctx) => {
+    return await ctx.models.Product.getAll();
+  },
+};
+
+exports.productMutations = {
+  createProduct: async (root, { input }, ctx) => {
+    const createdProduct = await ctx.models.Product.create(input);
+    return createdProduct;
+  },
+  updateProduct: async (root, { id, input }, ctx) => {
+    const updatedProduct = await ctx.models.Product.findAndUpdate(id, input);
+    return updatedProduct;
+  },
+  deleteProduct: async (root, { id }, ctx) => {
+    const deletedProductId = await ctx.models.Product.findAndDelete({
+      _id: id,
+    });
+    return deletedProductId._id;
+  },
+};
+
+exports.userQueries = {
+  user: (root, args, ctx) => {
+    return ctx.models.User.getAuthUser(ctx);
+  },
+};
+
+exports.userMutations = {
+  signUp: async (root, { input }, ctx) => {
+    const registeredUser = await ctx.models.User.signUp(input);
+    return registeredUser._id;
+  },
+  signIn: (root, { input }, ctx) => {
+    return ctx.models.User.signIn(input, ctx);
+  },
+  signOut: (root, args, ctx) => {
+    return ctx.models.User.signOut(ctx);
+  },
+};
+
+/*
 const data = {
   products: [
     {
@@ -110,35 +158,4 @@ const data = {
     },
   ],
 };
-
-exports.productQueries = {
-  product: (root, { id }) => {
-    const product = data.products.find((p) => p._id === id);
-    return product;
-  },
-  products: () => {
-    return data.products;
-  },
-};
-
-exports.productMutations = {
-  createProduct: (root, { input }) => {
-    const _id = require("crypto").randomBytes(10).toString("hex");
-    const newProduct = { ...input };
-    newProduct._id = _id;
-    data.products.push(newProduct);
-    return newProduct;
-  },
-  updateProduct: (root, { id, input }) => {
-    const index = data.products.findIndex((p) => p._id === id);
-    const oldProduct = data.products[index];
-    const newProduct = { ...oldProduct, ...input };
-    data.products[index] = newProduct;
-    return newProduct;
-  },
-  deleteProduct: (root, { id }) => {
-    const index = data.products.findIndex((p) => p._id === id);
-    data.products.splice(index, 1);
-    return id;
-  },
-};
+*/

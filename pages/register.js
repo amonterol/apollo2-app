@@ -1,7 +1,20 @@
 import Layout from "../components/Layout";
 import ColoredLine from "../components/ColoredLine";
+import RegisterForm from "../components/forms/RegisterForm";
+import { Mutation } from "react-apollo";
+import { SIGN_UP } from "../apollo/queries";
+import withApollo from "../hoc/withApollo";
+import Redirect from "../components/shared/Redirect";
 
 function RegisterPage() {
+  // TODO: Handle DB Errors!
+  const errorMessage = (error) => {
+    return (
+      (error.graphQLErrors && error.graphQLErrors[0].message) ||
+      "Ooooops something went wrong..."
+    );
+  };
+
   return (
     <Layout>
       <section className="hero  is-fullheight">
@@ -10,67 +23,24 @@ function RegisterPage() {
             <h3 className="title has-text-black">Crear una cuenta</h3>
             <ColoredLine />
             <div className="box">
-              <form>
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-medium"
-                      type="text"
-                      placeholder="Nombre"
+              <Mutation mutation={SIGN_UP}>
+                {(signUpUser, { data, error }) => (
+                  <>
+                    <RegisterForm
+                      onSubmit={(registerData) => {
+                        signUpUser({ variables: registerData });
+                      }}
                     />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-medium"
-                      type="text"
-                      placeholder="Apellidos"
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-large"
-                      type="email"
-                      placeholder="Email"
-                      autofocus=""
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-large"
-                      type="password"
-                      placeholder="Contraseña"
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="control">
-                    <label class="checkbox">
-                      <input type="checkbox" className="mr-2" />
-                      <a href="#">
-                        He leído y estoy de acuerdo con los términos y
-                        condiciones
-                      </a>
-                    </label>
-                  </div>
-                </div>
-
-                <button className="button is-block is-primary is-large is-fullwidth">
-                  Crear cuenta
-                </button>
-                <div className="field">
-                  <div className="control">
-                    <label class="content">
-                      <a href="#">¿Ya tiene una cuenta? Entrar aquí</a>
-                    </label>
-                  </div>
-                </div>
-              </form>
+                    {data && data.signUp && <Redirect to="/login/" />}
+                    {error && (
+                      <div className="notification is-warning">
+                        <button className="delete"></button>
+                        {errorMessage(error)}
+                      </div>
+                    )}
+                  </>
+                )}
+              </Mutation>
             </div>
           </div>
         </div>
@@ -78,4 +48,4 @@ function RegisterPage() {
     </Layout>
   );
 }
-export default RegisterPage;
+export default withApollo(RegisterPage);

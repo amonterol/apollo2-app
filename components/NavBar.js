@@ -58,7 +58,11 @@ function NavBar(props) {
               <a className="navbar-link has-text-weight-semibold">More</a>
 
               <div className="navbar-dropdown">
-                <a className="navbar-item " href="/" onClick={toggleBurgerMenu}>
+                <a
+                  className="navbar-item "
+                  href="/about"
+                  onClick={toggleBurgerMenu}
+                >
                   About
                 </a>
                 <a className="navbar-item" href="/" onClick={toggleBurgerMenu}>

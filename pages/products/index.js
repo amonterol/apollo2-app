@@ -1,9 +1,4 @@
-import {
-  useGetProduct,
-  useUpdateProduct,
-  useDeletePrduct,
-  useCreateProduct,
-} from "../../apollo/actions";
+import { useGetProducts } from "../../apollo/actions";
 
 import withApollo from "../../hoc/withApollo";
 import { getDataFromTree } from "@apollo/react-ssr";
@@ -16,20 +11,12 @@ import styles from "../../styles/productdetail.module.css";
 
 function Products() {
   //CRUD
-  const { data } = useGetProduct();
-  const [updateProduct] = useUpdateProduct();
-  const [deleteProduct] = useDeletePrduct();
-  const [createProduct] = useCreateProduct();
+  const { data } = useGetProducts();
 
   const products = (data && data.products) || [];
 
   return (
     <Layout>
-      <ColoredLine />
-      <button className="button is-info" onClick={createProduct}>
-        Create Product
-      </button>
-
       <div>
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
@@ -51,34 +38,36 @@ function Products() {
               <p className="menu-label">Género</p>
               <ul className="menu-list">
                 <li>
-                  <a>Mujer</a>
+                  <a href="/">Mujer</a>
                 </li>
                 <li>
-                  <a>Hombre</a>
+                  <a href="/">Hombre</a>
                 </li>
               </ul>
               <p className="menu-label">Product</p>
               <ul className="menu-list">
                 <li>
-                  <a>Bag</a>
+                  <a href="/">Bag</a>
                 </li>
                 <li>
-                  <a className="is-active">Sweather</a>
+                  <a href="/" className="is-active">
+                    Sweather
+                  </a>
                 </li>
                 <li>
-                  <a>Sunglass</a>
+                  <a href="/">Sunglass</a>
                 </li>
               </ul>
               <p className="menu-label">Rebajas</p>
               <ul className="menu-list">
                 <li>
-                  <a>Bag</a>
+                  <a href="/">Bag</a>
                 </li>
                 <li>
-                  <a>Sweather</a>
+                  <a href="/">Sweather</a>
                 </li>
                 <li>
-                  <a>Sunglass</a>
+                  <a href="/">Sunglass</a>
                 </li>
               </ul>
             </aside>
@@ -104,28 +93,14 @@ function Products() {
                 {products.map((product) => (
                   <div key={product._id} className="column is-3">
                     <Link href="/products/[id]" as={`/products/${product._id}`}>
-                      <a className={styles.cardLink}>
+                      <a
+                        className={styles.cardLink}
+                        href="/products/[id]"
+                        as={`/products/${product._id}`}
+                      >
                         <ProductCard product={product} />
                       </a>
                     </Link>
-                    <div>
-                      <button
-                        className="button is-danger"
-                        onClick={() =>
-                          deleteProduct({ variables: { id: product._id } })
-                        }
-                      >
-                        Delete Product
-                      </button>
-                      <button
-                        className="button is-warning"
-                        onClick={() =>
-                          updateProduct({ variables: { id: product._id } })
-                        }
-                      >
-                        Update Product
-                      </button>
-                    </div>
                   </div>
                 ))}
               </div>

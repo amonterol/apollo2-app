@@ -1,7 +1,19 @@
 import Layout from "../components/Layout";
 import ColoredLine from "../components/ColoredLine";
+import LoginForm from "../components/forms/LoginForm";
+import withApollo from "../hoc/withApollo";
+import { useSignIn } from "../apollo/actions";
+import Redirect from "../components/shared/Redirect";
 
 const Login = () => {
+  const [signIn, { data, loading, error }] = useSignIn();
+  const errorMessage = (error) => {
+    return (
+      (error.graphQLErrors && error.graphQLErrors[0].message) ||
+      "Ooooops something went wrong..."
+    );
+  };
+
   return (
     <Layout>
       <section className="hero  is-fullheight">
@@ -13,53 +25,27 @@ const Login = () => {
             <p className="subtitle has-text-black">
               Por favor ingrese su e-mail y contraseña:
             </p>
-            <div className="box">
-              <form>
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-large"
-                      type="email"
-                      placeholder="Your Email"
-                      autofocus=""
-                    />
-                  </div>
-                </div>
-
-                <div className="field">
-                  <div className="control">
-                    <input
-                      className="input is-large"
-                      type="password"
-                      placeholder="Your Password"
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <label className="checkbox">
-                    <input type="checkbox" />
-                    Remember me
-                  </label>
-                </div>
-                <button className="button is-block is-info is-large is-fullwidth">
-                  Login <i className="fa fa-sign-in" aria-hidden="true"></i>
-                </button>
-              </form>
-            </div>
-            <p className="has-text-grey">
+            <LoginForm
+              loading={loading}
+              onSubmit={(signInData) => signIn({ variables: signInData })}
+            />
+            {data && data.signIn && <Redirect to="/" />}
+            {error && (
+              <div className="alert alert-danger">{errorMessage(error)}</div>
+            )}
+            <div className="has-text-grey">
               <ul>
                 <li>
                   <a href="/register">¿Nuevo cliente? Crear cuenta</a>
                 </li>
                 <li>
-                  {" "}
                   <a href="/">¿Olvido su contraseña?</a>
                 </li>
                 <li>
                   <a href="/">Recuperar contraseña</a>
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
         </div>
       </section>
@@ -67,4 +53,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withApollo(Login);
