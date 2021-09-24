@@ -3,9 +3,14 @@ class Product {
     // this.Model === Product
     this.Model = model;
     this.user = user;
+    this.writeRights = ["admin", "gerente"];
   }
 
   getAll() {
+    return this.Model.find({});
+  }
+
+  getGestionProductos() {
     return this.Model.find({});
   }
 
@@ -14,7 +19,7 @@ class Product {
   }
 
   create(data) {
-    if (!this.user) {
+    if (!this.user || !this.writeRights.includes(this.user.role)) {
       throw new Error("No authorized!");
     }
     data.user = this.user;
@@ -24,6 +29,7 @@ class Product {
   findAndUpdate(id, data) {
     return this.Model.findOneAndUpdate({ _id: id }, data, {
       new: true,
+      runValidators: true,
     });
   }
 

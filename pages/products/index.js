@@ -5,6 +5,7 @@ import { getDataFromTree } from "@apollo/react-ssr";
 
 import Layout from "../../components/Layout";
 import ProductCard from "../../components/ProductCard";
+import ProductCard2 from "../../components/shared/ProductCard2";
 import ColoredLine from "../../components/ColoredLine";
 import Link from "next/link";
 import styles from "../../styles/productdetail.module.css";

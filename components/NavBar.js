@@ -1,7 +1,14 @@
 import React from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import withApollo from "../hoc/withApollo";
+import { useLazyGetUser } from "../apollo/actions";
 
-import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faUser,
+  faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/nav.module.css";
 
@@ -10,6 +17,24 @@ function NavBar(props) {
     document.querySelector("#navbarBasic").classList.toggle("is-active"); //.navbar-menu"
   }
 
+  const [user, setUser] = useState(null);
+  const [hasResponse, setHasResponse] = useState(false);
+  const [getUser, { data, error }] = useLazyGetUser();
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  if (data) {
+    if (data.user && !user) {
+      setUser(data.user);
+    }
+    if (!data.user && user) {
+      setUser(null);
+    }
+    if (!hasResponse) {
+      setHasResponse(true);
+    }
+  }
   return (
     <div>
       <nav
@@ -34,7 +59,7 @@ function NavBar(props) {
             <span className="navbar-item">
               <img
                 className="is-fullwidth"
-                src="logo640-320.png"
+                src="https://res.cloudinary.com/abmontero/image/upload/v1632186116/fdsFolder/logo640-320_b7id7a.png"
                 alt="Tienda Chayito"
               />
             </span>
@@ -53,30 +78,12 @@ function NavBar(props) {
             <Link href="/products">
               <a className="navbar-item has-text-weight-semibold">Products</a>
             </Link>
-
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link has-text-weight-semibold">More</a>
-
-              <div className="navbar-dropdown">
-                <a
-                  className="navbar-item "
-                  href="/about"
-                  onClick={toggleBurgerMenu}
-                >
-                  About
-                </a>
-                <a className="navbar-item" href="/" onClick={toggleBurgerMenu}>
-                  Jobs
-                </a>
-                <a className="navbar-item" href="/" onClick={toggleBurgerMenu}>
-                  Contact
-                </a>
-                <hr className="navbar-divider" />
-                <a className="navbar-item" href="/" onClick={toggleBurgerMenu}>
-                  Report an issue
-                </a>
-              </div>
-            </div>
+            <Link href="/products">
+              <a className="navbar-item has-text-weight-semibold">About</a>
+            </Link>
+            <Link href="/products">
+              <a className="navbar-item has-text-weight-semibold">Contact Us</a>
+            </Link>
           </div>
           <div className="navbar-end">
             <div className="navbar-item">
@@ -92,6 +99,57 @@ function NavBar(props) {
                 </a>
               </div>
             </div>
+
+            {hasResponse && (
+              <div className="navbar-item  is-dark">
+                {user && (
+                  <>
+                    {(user.role === "admin" || user.role === "gerente") && (
+                      <div className="navbar-item has-dropdown is-hoverable mr-3">
+                        <a className="navbar-link ">Administration</a>
+
+                        <div className="navbar-dropdown">
+                          <Link href="/products/createProduct">
+                            <a
+                              className="navbar-item "
+                              onClick={toggleBurgerMenu}
+                            >
+                              CreateProduct
+                            </a>
+                          </Link>
+                          <Link href="/administration/dashboard">
+                            <a
+                              className="navbar-item "
+                              onClick={toggleBurgerMenu}
+                            >
+                              Gestion de Productos
+                            </a>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
+                    <a href="/logout" className="nav-link button is-link">
+                      <span>Sign Out</span>
+                    </a>
+                  </>
+                )}
+                {(error || !user) && (
+                  <>
+                    <div className="navbar-item">
+                      <a href="/login">
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          style={{ width: "35px", height: "0.8rem" }}
+                        />
+                        <span>LOGIN</span>
+                      </a>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
             <div className="navbar-item">
               <div>
                 <a href="/">
@@ -111,4 +169,4 @@ function NavBar(props) {
   );
 }
 
-export default NavBar;
+export default withApollo(NavBar);

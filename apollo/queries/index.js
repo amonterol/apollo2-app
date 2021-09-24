@@ -8,6 +8,9 @@ export const GET_PRODUCT = gql`
       description
       status
       price
+      cantidad
+      category
+      subcategory
       photo
     }
   }
@@ -21,6 +24,25 @@ export const GET_PRODUCTS = gql`
       description
       status
       price
+      cantidad
+      category
+      subcategory
+      photo
+    }
+  }
+`;
+
+export const GET_GESTION_PRODUCTOS = gql`
+  query GestionProductos {
+    gestionProductos {
+      _id
+      name
+      description
+      status
+      price
+      cantidad
+      category
+      subcategory
       photo
     }
   }
@@ -85,15 +107,28 @@ export const CREATE_PRODUCT = gql`
 `;
 
 export const UPDATE_PRODUCT = gql`
-  mutation UpdateProduct($id: ID) {
+  mutation UpdateProduct(
+    $id: ID
+    $name: String!
+    $description: String!
+    $status: String!
+    $price: String!
+    $cantidad: String!
+    $category: String!
+    $subcategory: String!
+    $photo: String!
+  ) {
     updateProduct(
       id: $id
       input: {
-        name: "Update Yeti Hondo"
-        description: "Update soo nice"
-        status: "Updated AVAILABLE"
-        price: 3423
-        photo: "http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
+        name: $name
+        description: $description
+        status: $status
+        price: $price
+        cantidad: $cantidad
+        category: $category
+        subcategory: $subcategory
+        photo: $photo
       }
     ) {
       _id
@@ -101,6 +136,9 @@ export const UPDATE_PRODUCT = gql`
       description
       status
       price
+      cantidad
+      category
+      subcategory
       photo
     }
   }

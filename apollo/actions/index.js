@@ -2,6 +2,8 @@ import { useQuery, useMutation, useLazyQuery } from "@apollo/react-hooks";
 
 import {
   GET_PRODUCTS,
+  GET_PRODUCT,
+  GET_GESTION_PRODUCTOS,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
@@ -11,17 +13,23 @@ import {
 } from "../queries";
 
 export const useGetProducts = () => useQuery(GET_PRODUCTS);
+export const useGetProduct = (options) => useQuery(GET_PRODUCT, options);
+export const useGetGestionProductos = () => useQuery(GET_GESTION_PRODUCTOS);
 
 export const useUpdateProduct = () => useMutation(UPDATE_PRODUCT);
 
-export const useDeletePrduct = () =>
+export const useDeleteProduct = () =>
   useMutation(DELETE_PRODUCT, {
     update(cache, { data: { deleteProduct } }) {
-      const { products } = cache.readQuery({ query: GET_PRODUCTS });
-      const newProducts = products.filter((p) => p._id !== deleteProduct);
+      const { gestionProductos } = cache.readQuery({
+        query: GET_GESTION_PRODUCTOS,
+      });
+      const newProducts = gestionProductos.filter(
+        (p) => p._id !== deleteProduct
+      );
       cache.writeQuery({
-        query: GET_PRODUCTS,
-        data: { products: newProducts },
+        query: GET_GESTION_PRODUCTOS,
+        data: { gestionProductos: newProducts },
       });
     },
   });

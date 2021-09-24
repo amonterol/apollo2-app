@@ -31,10 +31,12 @@ function RegisterPage() {
                         signUpUser({ variables: registerData });
                       }}
                     />
-                    {data && data.signUp && <Redirect to="/login/" />}
+                    {data && data.signUp && (
+                      <Redirect to="/login" query={{ message: "LOGGED_IN" }} />
+                    )}
                     {error && (
                       <div className="notification is-warning">
-                        <button className="delete"></button>
+                        <button className="delete" onClick={cerrar}></button>
                         {errorMessage(error)}
                       </div>
                     )}

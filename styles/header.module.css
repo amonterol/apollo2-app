@@ -139,3 +139,7 @@
   padding: 0;
   list-style: none;
 }
+
+.posicion {
+  z-index: 1 !important;
+}

@@ -7,6 +7,11 @@ exports.productQueries = {
   products: async (root, args, ctx) => {
     return await ctx.models.Product.getAll();
   },
+  gestionProductos: async (root, args, ctx) => {
+    return await ctx.models.Product.getGestionProductos().sort({
+      name: "desc",
+    });
+  },
 };
 
 exports.productMutations = {
@@ -35,6 +40,9 @@ exports.userQueries = {
 exports.userMutations = {
   signUp: async (root, { input }, ctx) => {
     const registeredUser = await ctx.models.User.signUp(input);
+    if (!registeredUser) {
+      throw new UserInputError("Invalid argument value");
+    }
     return registeredUser._id;
   },
   signIn: (root, { input }, ctx) => {

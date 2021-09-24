@@ -15,7 +15,7 @@ const User = require("./models/User");
 
 exports.createApolloServer = () => {
   //Construct a schema, using GRAPHQL schema language
-  //const schema = buildSchema(`
+
   const typeDefs = gql(`
     ${productTypes}
     ${userTypes}
@@ -23,6 +23,7 @@ exports.createApolloServer = () => {
     type Query {
       product(id: ID): Product
       products: [Product]
+      gestionProductos: [Product]
       user: User
     }
     type Mutation {

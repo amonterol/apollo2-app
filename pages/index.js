@@ -43,49 +43,77 @@ function HomePage(props) {
     <Layout>
       <div className="columns">
         <div className="column">
-          {" "}
-          <figure className="image is-5by3">
-            <img
-              src="https://picsum.photos/800/600/?random"
-              alt="Description"
-            />
-          </figure>
+          <div className="card is-fullimage">
+            <div className="card-image">
+              <figure className="image is-5by3 m-0">
+                <img
+                  src="https://res.cloudinary.com/abmontero/image/upload/v1632349547/fdsFolder/ujwjri1zimwbxgbtlqxp.jpg"
+                  alt="Placeholder image"
+                />
+              </figure>
+              <div className="cards-stacked  ">
+                <div className="cards-content ml-6 ">
+                  <div className="media-content">
+                    <p className="subtitle is-6">NUEVA COLECCION</p>
+                    <p className="title is-4">ROPA DE MUJER</p>
+                    <a href="/products">
+                      <p className="subtitle is-6"> Descúbrelo ahora</p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="column">
-          {" "}
-          <figure className="image is-5by3">
-            <img
-              src="https://picsum.photos/800/600/?random"
-              alt="Description"
-            />
-          </figure>
+          <div className="card is-fullimage">
+            <div className="card-image">
+              <figure className="image is-5by3 m-0">
+                <img
+                  src="https://res.cloudinary.com/abmontero/image/upload/v1632349530/fdsFolder/yznvssjohkp47ecd619f.jpg"
+                  alt="Placeholder image"
+                />
+              </figure>
+              <div className="cards-stacked">
+                <div className="cards-content">
+                  <div className="media-content">
+                    <p className="subtitle is-6">NUEVA COLECCION</p>
+                    <p className="title is-4">ROPA DE HOMBRE</p>
+                    <a href="/products">
+                      <p className="subtitle is-6"> Descúbrelo ahora</p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="columns">
         <div className="column">
           {" "}
-          <figure className="image is-16by9">
+          <figure className="image is-4by3">
             <img
-              src="https://picsum.photos/800/600/?random"
+              src="https://res.cloudinary.com/abmontero/image/upload/v1630708815/fdsFolder/rpcsbeopghbgztbwmmwb.png"
               alt="Description"
             />
           </figure>
         </div>
         <div className="column">
           {" "}
-          <figure className="image is-16by9">
+          <figure className="image is-4by3">
             <img
-              src="https://picsum.photos/800/600/?random"
+              src="https://res.cloudinary.com/abmontero/image/upload/v1632361558/vau8opd6oqjgtsdbjbfq.png"
               alt="Description"
             />
           </figure>
         </div>
         <div className="column">
           {" "}
-          <figure className="image is-16by9">
+          <figure className="image is-4by3">
             <img
-              src="https://picsum.photos/800/600/?random"
+              src="https://res.cloudinary.com/abmontero/image/upload/v1632360709/qb75lmm323hwopzfmtrx.png"
               alt="Description"
             />
           </figure>

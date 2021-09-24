@@ -5,7 +5,7 @@ function ProductCard({ product }) {
   return (
     <div className="card is-shady">
       <div className="card-image">
-        <figure className="image is-4by3">
+        <figure className="image is-5by4">
           <img src={product.photo} alt="Product image" />
         </figure>
       </div>

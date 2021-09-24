@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { GET_PRODUCT } from "../../apollo/queries";
-import withApollo from "../../hoc/withApollo";
-import { getDataFromTree } from "@apollo/react-ssr";
+import Link from "next/link";
 
-import Layout from "../../components/Layout";
-import Description from "../../components/Description";
-import Shipping from "../../components/Shipping";
-import Detail from "../../components/Detail";
-import Spinner from "../../components/Spinner";
-import styles from "../../styles/productdetail.module.css";
+import { useGetProduct } from "../../../apollo/actions";
+
+import { getDataFromTree } from "@apollo/react-ssr";
+import withApollo from "../../../hoc/withApollo";
+
+import Layout from "../../../components/Layout";
+import Description from "../../../components/Description";
+import Shipping from "../../../components/Shipping";
+import Spinner from "../../../components/Spinner";
+import styles from "../../../styles/productdetail.module.css";
 
 function ProductDetail({ query }) {
   const [state, setState] = useState("women");
@@ -40,7 +41,7 @@ function ProductDetail({ query }) {
     mySpecialFunctionHombres();
   };
 
-  const { loading, error, data } = useQuery(GET_PRODUCT, {
+  const { data } = useGetProduct({
     variables: { id: query.id },
   });
   const product = (data && data.product) || {};
@@ -51,10 +52,14 @@ function ProductDetail({ query }) {
         <nav className="breadcrumb" aria-label="breadcrumbs">
           <ul>
             <li>
-              <a href="#">Home</a>
+              <Link href="/">
+                <a>Home</a>
+              </Link>
             </li>
             <li>
-              <a href="#">Product</a>
+              <Link href="/products">
+                <a>Product</a>
+              </Link>
             </li>
             <li>
               <a href="#">Product detail</a>
@@ -66,53 +71,45 @@ function ProductDetail({ query }) {
         <div className="column">
           <div className="columns is-gapless">
             <div className="column is-one-fifth">
-              <div className="columns">
+              <div className="columns mt-3">
                 <div className="column">
-                  <div className="card is-shady">
-                    <a href="/" className="is-white">
-                      <figure className="image is-fullwidth">
-                        <img src={product.photo} alt="Product image" />
-                      </figure>
-                    </a>
-                  </div>
+                  <a href="/" className="is-white">
+                    <figure className="image is-fullwidth is-128by128">
+                      <img src={product.photo} alt="Product image" />
+                    </figure>
+                  </a>
                 </div>
               </div>
               <div className="columns">
                 <div className="column">
-                  <div className="card is-shady">
-                    <a href="/" className="is-white">
-                      <figure className="image is-fullwidth">
-                        <img src={product.photo} alt="Product image" />
-                      </figure>
-                    </a>
-                  </div>
+                  <a href="/" className="is-white">
+                    <figure className="image is-fullwidth is-128by128">
+                      <img src={product.photo} alt="Product image" />
+                    </figure>
+                  </a>
                 </div>
               </div>
               <div className="columns">
                 <div className="column">
-                  <div className="card is-shady">
-                    <a href="/" className="is-white">
-                      <figure className="image is-fullwidth">
-                        <img src={product.photo} alt="Product image" />
-                      </figure>
-                    </a>
-                  </div>
+                  <a href="/" className="is-white">
+                    <figure className="image is-fullwidth is-128by128">
+                      <img src={product.photo} alt="Product image" />
+                    </figure>
+                  </a>
                 </div>
               </div>
               <div className="columns">
                 <div className="column">
-                  <div className="card is-shady">
-                    <a href="/" className="is-white">
-                      <figure className="image is-fullwidth ">
-                        <img src={product.photo} alt="Product image" />
-                      </figure>
-                    </a>
-                  </div>
+                  <a href="/" className="is-white">
+                    <figure className="image is-fullwidth is-128by128">
+                      <img src={product.photo} alt="Product image" />
+                    </figure>
+                  </a>
                 </div>
               </div>
             </div>
             <div className="column is-four-fifths">
-              <figure className="image is-fullwidth is-5by4">
+              <figure className="image is-fullwidth is-3by4 ml-3">
                 <img src={product.photo} alt="Product image" />
               </figure>
             </div>

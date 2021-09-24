@@ -1,0 +1,60 @@
+.card {
+  &.is-horizontal {
+    display: flex;
+
+    .card-image {
+      width: 100%;
+      height: 100%;
+    }
+
+    .cards-stacked {
+      flex-direction: column;
+      flex: 1 1 auto;
+      display: flex;
+      position: absolute;
+
+      left: 150px;
+      margin: 0;
+      padding: 10px;
+
+      .cards-content {
+        flex-grow: 1;
+        position: absolute;
+
+        left: 15px;
+      }
+    }
+  }
+
+  &.is-fullimage {
+    background-color: transparent;
+    .card-image {
+      color: #fff !important;
+      .cards-stacked {
+        position: absolute;
+        left: 200px;
+        bottom: 150px;
+        width: 100%;
+
+        text-shadow: 0px 0px 2px #000000;
+
+        .cards-footer {
+          border-color: transparent;
+        }
+
+        .title,
+        .subtitle {
+          color: inherit;
+        }
+
+        a {
+          color: inherit;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

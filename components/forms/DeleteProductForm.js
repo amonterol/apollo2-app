@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 
-const CreateProductForm = ({ onSubmit }) => {
-  const { handleSubmit, register } = useForm();
+const DeleteProductForm = ({ onSubmit, initialData = {} }) => {
+  const { handleSubmit, register, setValue } = useForm({
+    defaultValues: initialData,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -112,31 +115,19 @@ const CreateProductForm = ({ onSubmit }) => {
           />
         </div>
       </div>
-      <div className="field">
-        <label className="label">Photo</label>
-        <div className="control ">
-          <input
-            className="input "
-            type="text"
-            placeholder="url from cloudinary"
-            name="photo"
-            id="photo"
-            {...register("photo", {
-              required: "Required",
-            })}
-          />
-        </div>
-      </div>
+
       <div className="field is-grouped mb-5">
         <div className="control">
-          <button className="button is-link">Agregar Producto</button>
+          <button className="button is-link">Borrar</button>
         </div>
         <div className="control">
-          <button className="button is-link is-light">Cancel</button>
+          <Link href="/administration/dashboard">
+            <button className="button is-link is-light">Salir</button>
+          </Link>
         </div>
       </div>
     </form>
   );
 };
 
-export default CreateProductForm;
+export default DeleteProductForm;
