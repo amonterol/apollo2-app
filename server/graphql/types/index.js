@@ -11,6 +11,12 @@ exports.productTypes = `
       photo: String
 
     }
+
+    type PagProduct {
+      products: [Product]
+      count: Int
+    }
+
     input ProductInput {
       name: String!
       description: String!
@@ -21,6 +27,8 @@ exports.productTypes = `
       cantidad: String!
       photo: String!
     }
+ 
+
 `;
 
 exports.userTypes = `

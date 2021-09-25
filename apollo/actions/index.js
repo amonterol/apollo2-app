@@ -12,7 +12,7 @@ import {
   GET_USER,
 } from "../queries";
 
-export const useGetProducts = () => useQuery(GET_PRODUCTS);
+export const useGetProducts = (options) => useQuery(GET_PRODUCTS, options);
 export const useGetProduct = (options) => useQuery(GET_PRODUCT, options);
 export const useGetGestionProductos = () => useQuery(GET_GESTION_PRODUCTOS);
 

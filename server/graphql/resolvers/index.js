@@ -1,11 +1,13 @@
-const Product = require("../../database/models/product");
+var mongoose = require("mongoose");
+var Product = mongoose.model("Product");
+//const Product = require("../../database/models/product");
 
 exports.productQueries = {
   product: async (root, { id }, ctx) => {
     return await ctx.models.Product.getById(id);
   },
-  products: async (root, args, ctx) => {
-    return await ctx.models.Product.getAll();
+  products: async (root, { ...pagination }, ctx) => {
+    return await ctx.models.Product.getAll({ ...pagination });
   },
   gestionProductos: async (root, args, ctx) => {
     return await ctx.models.Product.getGestionProductos().sort({

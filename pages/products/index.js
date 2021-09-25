@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useGetProducts } from "../../apollo/actions";
 
 import withApollo from "../../hoc/withApollo";
@@ -5,16 +7,60 @@ import { getDataFromTree } from "@apollo/react-ssr";
 
 import Layout from "../../components/Layout";
 import ProductCard from "../../components/ProductCard";
-import ProductCard2 from "../../components/shared/ProductCard2";
-import ColoredLine from "../../components/ColoredLine";
+
 import Link from "next/link";
 import styles from "../../styles/productdetail.module.css";
+import AppPagination from "../../components/shared/Pagination";
+import { userMutations } from "../../server/graphql/resolvers";
+
+const useInitialData = (pagination) => {
+  const { data: dataProducts, fetchMore } = useGetProducts({
+    variables: { ...pagination },
+    pollInterval: 5000,
+  });
+
+  const productsData = (dataProducts && dataProducts.products) || {
+    products: [],
+    count: 0,
+  };
+  return { ...productsData, fetchMore };
+};
 
 function Products() {
-  //CRUD
-  const { data } = useGetProducts();
+  const router = useRouter();
+  const { pageNumber = 1, pageSize = 5 } = router.query;
+  const [pagination, setPagination] = useState({
+    pageNumber: parseInt(pageNumber, 10),
+    pageSize: parseInt(pageSize, 10),
+  });
 
-  const products = (data && data.products) || [];
+  const { products, ...rest } = useInitialData(pagination);
+  const count = rest.count;
+
+  console.log("ESTE ES EL NUMERO DE PRODUCTOS", count);
+
+  const onPageChange = (pageNumber, pageSize) => {
+    router.push(
+      "/products",
+      `/products?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      { shallow: true }
+    );
+
+    /*
+    router.push(
+      {
+        pathname: "/products",
+        query: {
+          pageNumber,
+          pageSize,
+        },
+      },
+      `/products?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      { shallow: true }
+    );
+*/
+    setPagination({ pageNumber, pageSize });
+  };
 
   return (
     <Layout>
@@ -77,15 +123,15 @@ function Products() {
             <nav className="navbar is-transparent">
               <div id="navbarExampleTransparentExample" className="navbar-menu">
                 <div className="navbar-start">
-                  <a className="navbar-item" href="/">
-                    Todos
-                  </a>
-                  <a className="navbar-item" href="/">
-                    Mujeres
-                  </a>
-                  <a className="navbar-item" href="/">
-                    Hombres
-                  </a>
+                  <Link href="/">
+                    <a className="navbar-item">Todos</a>
+                  </Link>
+                  <Link href="/">
+                    <a className="navbar-item">Mujeres</a>
+                  </Link>
+                  <Link href="/">
+                    <a className="navbar-item">Hombres</a>
+                  </Link>
                 </div>
               </div>
             </nav>
@@ -94,18 +140,27 @@ function Products() {
                 {products.map((product) => (
                   <div key={product._id} className="column is-3">
                     <Link href="/products/[id]" as={`/products/${product._id}`}>
-                      <a
-                        className={styles.cardLink}
-                        href="/products/[id]"
-                        as={`/products/${product._id}`}
-                      >
-                        <ProductCard product={product} />
+                      <a className={styles.cardLink}>
+                        <div>
+                          <ProductCard product={product} />
+                        </div>
                       </a>
                     </Link>
                   </div>
                 ))}
               </div>
             </section>
+            <div
+              className="pagination is-small is-right is-rounded "
+              aria-label="pagination"
+            >
+              <AppPagination
+                onChange={onPageChange}
+                pageNumber={pagination.pageNumber}
+                pageSize={pagination.pageSize}
+                count={count}
+              />
+            </div>
           </div>
         </div>
       </div>

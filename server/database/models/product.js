@@ -13,4 +13,5 @@ const productSchema = new Schema({
   photo: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports =
+  mongoose.models.Product || mongoose.model("Product", productSchema);

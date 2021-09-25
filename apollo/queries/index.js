@@ -16,9 +16,7 @@ export const GET_PRODUCT = gql`
   }
 `;
 
-export const GET_PRODUCTS = gql`
-  query Products {
-    products {
+const productResponse = `
       _id
       name
       description
@@ -28,7 +26,17 @@ export const GET_PRODUCTS = gql`
       category
       subcategory
       photo
+`;
+
+export const GET_PRODUCTS = gql`
+  query Products($pageNumber: Int, $pageSize: Int) {
+    products(pageNumber: $pageNumber, pageSize: $pageSize) {
+      products {
+        ${productResponse}
+      }
+      count
     }
+    
   }
 `;
 
@@ -47,6 +55,7 @@ export const GET_GESTION_PRODUCTOS = gql`
     }
   }
 `;
+
 /*
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct {

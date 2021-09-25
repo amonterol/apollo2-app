@@ -22,9 +22,12 @@ exports.createApolloServer = () => {
 
     type Query {
       product(id: ID): Product
-      products: [Product]
+      products(pageNumber: Int, pageSize: Int):  PagProduct
       gestionProductos: [Product]
       user: User
+      
+   
+     
     }
     type Mutation {
       createProduct(input: ProductInput): Product

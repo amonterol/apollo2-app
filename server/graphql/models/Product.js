@@ -6,8 +6,11 @@ class Product {
     this.writeRights = ["admin", "gerente"];
   }
 
-  getAll() {
-    return this.Model.find({});
+  async getAll({ pageNumber = 1, pageSize = 5 }) {
+    const count = await this.Model.countDocuments({});
+    const skips = pageSize * (pageNumber - 1);
+    const products = await this.Model.find({}).skip(skips).limit(pageSize);
+    return { products, count };
   }
 
   getGestionProductos() {
