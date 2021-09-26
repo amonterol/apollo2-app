@@ -1,16 +1,42 @@
 import { useState } from "react";
+import MainLayout from "../components/shared/MainLayout";
 import Layout from "../components/Layout";
 import {
   faShoppingCart,
   faArrowCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DestacadosWomen from "../components/DestacadosWomen";
-import DestacadosMen from "../components/DestacadosMen";
+
 import NovedadesMujeres from "../components/NovedadesMujeres";
 import NovedadesHombres from "../components/NovedadesHombres";
+import {
+  useGetHighlight,
+  useGetHighlightHombres,
+  useGetHighlightMujeres,
+} from "../apollo/actions";
+import { getDataFromTree } from "@apollo/react-ssr";
+import withApollo from "../hoc/withApollo";
+import HighlightCard from "../components/shared/HighlightCard";
+import Link from "next/link";
+import styles from "../styles/productdetail.module.css";
+
+const useGetInitialDataNovedadesMujeres = () => {
+  const { data: dataM } = useGetHighlightMujeres({ variables: { limit: 5 } });
+  const products = (dataM && dataM.highlightMujeres.products) || [];
+  return { products };
+};
+
+const useGetInitialDataNovedadesHombres = () => {
+  const { data: dataH } = useGetHighlightHombres({ variables: { limit: 5 } });
+  const products = (dataH && dataH.highlightHombres.products) || [];
+  return { products };
+};
 
 function HomePage(props) {
+  const { products: productosM } = useGetInitialDataNovedadesMujeres();
+  const { products: productosH } = useGetInitialDataNovedadesHombres();
+  debugger;
+
   const [state, setState] = useState("women");
 
   const mySpecialFunctionMujeres = () => {
@@ -40,7 +66,7 @@ function HomePage(props) {
   };
 
   return (
-    <Layout>
+    <MainLayout>
       <div className="columns">
         <div className="column">
           <div className="card is-fullimage">
@@ -89,7 +115,6 @@ function HomePage(props) {
           </div>
         </div>
       </div>
-
       <div className="columns">
         <div className="column">
           {" "}
@@ -119,82 +144,89 @@ function HomePage(props) {
           </figure>
         </div>
       </div>
-
       {/* PRODUCTOS DESTACADOS */}
-
       <section className="section">
         <div className="container has-text-centered">
           <h2 className="title">PRODUCTOS DESTACADOS</h2>
           <div className="columns is-centered ">
-            <nav
-              className="navbar"
-              role="navigation"
-              aria-label="main navigation"
-            >
-              <div id="navbarBasicExample" className="navbar-menu">
-                <div className="navbar-start">
-                  <a className="navbar-item is-tab ">
-                    <button className="button" onClick={onClickHandlerMujeres}>
-                      WOMEN'S CLOTHING
-                    </button>
-                  </a>
-                  <a className="navbar-item is-tab ">
-                    <button className="button" onClick={onClickHandlerHombres}>
-                      MEN'S CLOTHING
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </nav>
+            <Link href="/products">
+              <a className="navbar-item is-tab is-size-4">WOMEN'S CLOTHING</a>
+            </Link>
           </div>
-          {/*  WOMEN'S CLOTHING*/}
-          {state === "women" && <DestacadosWomen />}
 
-          {/* MENS CLOTHING */}
-          {state === "men" && <DestacadosMen />}
+          <div className="columns is-centered" style={{ padding: 2 }}>
+            {productosM.map((product) => (
+              <div key={product._id} className="column is-3">
+                <Link href="/products/[id]" as={`/products/${product._id}`}>
+                  <a>
+                    <HighlightCard product={product} />
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="columns is-centered ">
+            <Link href="/products">
+              <a className="navbar-item is-tab is-size-4 ">MEN'S CLOTHING</a>
+            </Link>
+          </div>
+
+          <div className="columns is-centered" style={{ padding: 2 }}>
+            {productosH.map((product) => (
+              <div key={product._id} className="column is-3">
+                <Link href="/products/[id]" as={`/products/${product._id}`}>
+                  <a>
+                    <HighlightCard product={product} />
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-
       {/* NEW ARRIVALS */}
-
       <section className="section">
         <div className="container has-text-centered">
-          <h2 className="title">NEW ARRIVALS</h2>
+          <h2 className="title">PRODUCTOS DESTACADOS</h2>
           <div className="columns is-centered ">
-            <nav
-              className="navbar"
-              role="navigation"
-              aria-label="main navigation"
-            >
-              <div id="navbarBasicExample" className="navbar-menu">
-                <div className="navbar-start">
-                  <a className="navbar-item is-tab ">
-                    <button
-                      className="button"
-                      onClick={onClickHandlerNovedadesMujeres}
-                    >
-                      WOMEN'S CLOTHING
-                    </button>
-                  </a>
-                  <a className="navbar-item is-tab ">
-                    <button
-                      className="button"
-                      onClick={onClickHandlerNovedadesHombres}
-                    >
-                      MEN'S CLOTHING
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </nav>
+            <Link href="/products">
+              <a className="navbar-item is-tab is-size-4">WOMEN'S CLOTHING</a>
+            </Link>
           </div>
-          {/*  WOMEN'S CLOTHING*/}
-          {state === "women" && <NovedadesMujeres />}
 
-          {/* MENS CLOTHING */}
-          {state === "men" && <NovedadesHombres />}
+          <div className="columns is-centered" style={{ padding: 2 }}>
+            {productosM.map((product) => (
+              <div key={product._id} className="column is-3">
+                <Link href="/products/[id]" as={`/products/${product._id}`}>
+                  <a>
+                    <HighlightCard product={product} />
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="columns is-centered ">
+            <Link href="/products">
+              <a className="navbar-item is-tab is-size-4 ">MEN'S CLOTHING</a>
+            </Link>
+          </div>
+
+          <div className="columns is-centered" style={{ padding: 2 }}>
+            {productosH.map((product) => (
+              <div key={product._id} className="column is-3">
+                <Link href="/products/[id]" as={`/products/${product._id}`}>
+                  <a>
+                    <HighlightCard product={product} />
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+      s
       <div className="container has-text-centered">
         <button className="button">
           <a href="/cartPage">
@@ -208,8 +240,8 @@ function HomePage(props) {
         </button>
       </div>
       <div className="column"></div>
-    </Layout>
+    </MainLayout>
   );
 }
 
-export default HomePage;
+export default withApollo(HomePage, { getDataFromTree });

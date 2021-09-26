@@ -55,30 +55,30 @@ export const GET_GESTION_PRODUCTOS = gql`
     }
   }
 `;
-
-/*
-export const CREATE_PRODUCT = gql`
-  mutation CreateProduct {
-    createProduct(
-      input: {
-        name: "new product"
-        description: "new product descripton"
-        status: "new available"
-        price: 1002
-        photo: "http://res.cloudinary.com/wesbos/image/upload/v1576791335/sick-fits-keystone/5dfbed262849d7961377c2c0.jpg"
+export const GET_HIGHLIGHT_MUJERES = gql`
+  query HighlightMujeres($limit: Int) {
+    highlightMujeres(limit: $limit) {
+      products {
+        _id
+        name
+        photo
       }
-    ) {
-      _id
-      name
-      description
-      status
-      price
-      photo
     }
   }
 `;
-*/
+export const GET_HIGHLIGHT_HOMBRES = gql`
+  query HighlightHombres($limit: Int) {
+    highlightHombres(limit: $limit) {
+      products {
+        _id
+        name
+        photo
+      }
+    }
+  }
+`;
 
+// Products mutation
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct(
     $name: String!

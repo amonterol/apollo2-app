@@ -2,6 +2,7 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const mongoose = require("mongoose");
 
 const {
+  mixedQueries,
   productQueries,
   productMutations,
   userMutations,
@@ -25,7 +26,8 @@ exports.createApolloServer = () => {
       products(pageNumber: Int, pageSize: Int):  PagProduct
       gestionProductos: [Product]
       user: User
-      
+      highlightMujeres(limit: Int): HighlightResponse
+      highlightHombres(limit: Int): HighlightResponse
    
      
     }
@@ -47,6 +49,7 @@ exports.createApolloServer = () => {
     Query: {
       ...productQueries,
       ...userQueries,
+      ...mixedQueries,
     },
     Mutation: {
       ...productMutations,

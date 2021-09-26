@@ -2,6 +2,21 @@ var mongoose = require("mongoose");
 var Product = mongoose.model("Product");
 //const Product = require("../../database/models/product");
 
+exports.mixedQueries = {
+  highlightMujeres: async (root, { limit = 5 }, ctx) => {
+    const products = await ctx.models.Product.getRandoms(limit);
+    return {
+      products,
+    };
+  },
+  highlightHombres: async (root, { limit = 5 }, ctx) => {
+    const products = await ctx.models.Product.getRandoms(limit);
+    return {
+      products,
+    };
+  },
+};
+
 exports.productQueries = {
   product: async (root, { id }, ctx) => {
     return await ctx.models.Product.getById(id);

@@ -10,7 +10,14 @@ import {
   SIGN_IN,
   SIGN_OUT,
   GET_USER,
+  GET_HIGHLIGHT_MUJERES,
+  GET_HIGHLIGHT_HOMBRES,
 } from "../queries";
+
+export const useGetHighlightMujeres = (options) =>
+  useQuery(GET_HIGHLIGHT_MUJERES, options);
+export const useGetHighlightHombres = (options) =>
+  useQuery(GET_HIGHLIGHT_HOMBRES, options);
 
 export const useGetProducts = (options) => useQuery(GET_PRODUCTS, options);
 export const useGetProduct = (options) => useQuery(GET_PRODUCT, options);

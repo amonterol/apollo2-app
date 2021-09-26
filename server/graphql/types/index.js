@@ -27,6 +27,10 @@ exports.productTypes = `
       cantidad: String!
       photo: String!
     }
+
+    type HighlightResponse {
+      products: [Product]
+    }
  
 
 `;

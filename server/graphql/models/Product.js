@@ -1,8 +1,10 @@
-class Product {
+const BaseModel = require("./BaseModel");
+
+class Product extends BaseModel {
   constructor(model, user) {
-    // this.Model === Product
-    this.Model = model;
-    this.user = user;
+    // this.Model = model;
+    // this.user = user;
+    super(model, user);
     this.writeRights = ["admin", "gerente"];
   }
 

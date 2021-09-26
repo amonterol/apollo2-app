@@ -11,7 +11,6 @@ function Layout({ children }) {
       <NavBar />
       {children}
 
-      <Footer />
       <ToastContainer />
     </div>
   );
